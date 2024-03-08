@@ -1,1 +1,1 @@
-# MNIST_classification_with_MLflow_-_DVC
+# MNIST_classification_with_MLflow_and_DVC
