@@ -2,7 +2,7 @@
 
 from src.MNIST.entity.config_entity import PrepareBaseModelConfig
 import tensorflow as tf
-
+from pathlib import Path
 
 
 class PrepareBaseModel:
@@ -19,7 +19,10 @@ class PrepareBaseModel:
                 classes=self.config.params_classes,          
         )
 
-        self.save_model(path = self.config.base_model_path, model = self.model)
+        # self.save_model(path = self.config.base_model_path, model = self.model)
+
+        tf.keras.models.save_model(model=self.model, filepath=self.config.base_model_path)
+
 
 
     @staticmethod
@@ -62,6 +65,28 @@ class PrepareBaseModel:
         full_model.summary()
 
         return full_model
+    
+
+
+
+    # the below method is responsible for updating the base model
+
+    def update_base_model(self):
+        self.full_model = self._prepare_full_model(
+            model = self.model, ## this is the base model
+            classes = self.config.params_classes,
+            freeze_all=True,
+            freeze_till=None,
+            learning_rate=self.config.params_learning_rate
+        )
         
+        # self.save_model(path = self.config.updated_base_model_path , model = self.full_model)
+        
+        tf.keras.models.save_model(model=self.full_model, filepath=self.config.updated_base_model_path)
 
 
+
+
+    # @staticmethod
+    # def save_model(path : Path, model : tf.keras.Model):
+    #     model.save(path)
